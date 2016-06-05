@@ -1,0 +1,122 @@
+<html ng-app="reportingToolModule">
+  <head>
+    <meta charset="utf-8">
+    <title>Changing Places - Reporting Tool</title>
+    <script src="script/lib/angular.min.js"></script>
+    <script src="script/lib/jquery.min.js"></script>
+    <script src="script/lib/bootstrap.min.js"></script>
+    <script src="script/app.js"></script>
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/lib/bootstrap.min.css" />
+  </head>
+  <body ng-controller="reportingToolCtrl">
+    <div class="container">
+      <h1>Administrator</h1>
+      <h2>Create QR Code for Twitter feedback</h2>
+        Location hashtag: <input type="text" ng-model="hashtag"/>
+        Message Type:
+         <select>
+          <option ng-repeat="moption in messageOptions" value="{{moption.value}}" ng-model="messageType.value">{{moption.label}}</option>
+        </select>
+        <br />
+        <a href="">{{tagUrl}}{{hashtag}}{{tagUrl2}}{{messageType}}</a>
+      <h2>Report User Feedback</h2>
+      <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#feedbackArea" ng-click="getFeedbackForms();">See report</button>
+      <div id="feedbackArea" class="collapse">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>
+                <a href="#" ng-click="sortType = 'dateTime'; sortReverse = !sortReverse">
+                  Date
+                  <span ng-show="sortType == 'dateTime'" class="fa fa-caret-down"></span>
+                </a>
+              </th>
+              <th>
+                Reported Location
+              </th>
+              <th>
+                Comment
+              </th>
+              <th>
+                <a href="#" ng-click="sortType = 'accessibility'; sortReverse = !sortReverse">
+                Accessibility
+                <span ng-show="sortType == 'accessibility'" class="fa fa-caret-down"></span>
+              </a>
+              </th>
+              <th>
+                <a href="#" ng-click="sortType = 'cleanliness'; sortReverse = !sortReverse">
+                Cleanliness
+                <span ng-show="sortType == 'cleanliness'" class="fa fa-caret-down"></span>
+              </a>
+              </th>
+              <th>
+                <a href="#" ng-click="sortType = 'overallRating'; sortReverse = !sortReverse">
+                  Overall rating
+                  <span ng-show="sortType == 'overallRating'" class="fa fa-caret-down"></span>
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <tbody >
+            <tr ng-repeat="form in feedbackForms | orderBy:sortType:sortReverse">
+              <td>
+                {{form.dateTime | date:'medium'}}
+              </td>
+              <td>
+                {{form.locationRef}}
+              </td>
+              <td>
+                {{form.comments}}
+              </td>
+              <td>
+                {{form.accessibility}}
+              </td>
+              <td>
+                {{form.cleanliness}}
+              </td>
+              <td>
+                {{form.overallRating}}
+              </td>
+              <td>
+                <button class="btn btn-warning" ng-click="deleteFeedback(form.id);">Delete (spam)</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2>Reports on requested locations</h2>
+      <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#reqLocationArea" ng-click="getRequestedLocations();">Show report</button>
+      <div id="reqLocationArea" class="collapse">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>
+                Requested location
+              </th>
+              <th>
+                Current Location
+              </th>
+              <th>
+                Comments
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="request in requestedLocations">
+              <td>
+                {{request.requestedLocation}}
+              </td>
+              <td>
+                {{request.currentLocation}}
+              </td>
+              <td>
+                {{request.comments}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
